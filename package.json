@@ -1,0 +1,24 @@
+{
+  "name": "jobject",
+  "description": "An class that adds properties to your class that are easily overriden and maintain direct accessors.  Similiar to objective-c @property and @synthesize",
+  "version": "0.0.1",
+  "author": {
+    "name": "Jesse Earle",
+    "email": "earle.jesse@gmail.com"
+  },
+  "keywords": [
+    "properties",
+    "objective-c",
+    "@property",
+    "@synthesize"
+  ],
+  "devDependencies": {
+    "mocha": ">=1.6.0",
+    "should": ">=1.2.1"
+  },
+  "main": "./lib/jobject",
+  "engines": {
+    "coffee": "*",
+    "node": "*"
+  }
+}
