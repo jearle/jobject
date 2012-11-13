@@ -8,48 +8,45 @@ class Jobject
   @regex:
     invalidPropertyName: /(^\d|\s|[^A-Za-z0-9$_])/g
 
-  property: (name, intitialValue)->
-    throw new Jobject.invalidPropertyName name if not @validPropertyName name
+  @property: (name, intitialValue, getterSetter)->
+    throw new @invalidPropertyName name if not @validPropertyName name
 
     privateName = @createPrivateName name
     @addPrivateProperty privateName, intitialValue
 
     setterName = @createSetterName name
+    
+    setFunction = @createSetter privateName
+    getFunction = @createGetter privateName
 
-    proto = Object.getPrototypeOf @
+    if getterSetter
+      if getterSetter.set
+        setFunction = getterSetter.set
+      if getterSetter.get
+        getFunction = getterSetter.get
 
-    Object.defineProperty proto, name, 
-      get: @createGetter name, privateName
-      set: @createSetter setterName, privateName
+    Object.defineProperty @::, name, 
+      get: getFunction
+      set: setFunction
   
-  createGetter: (name, privateName)->
-    if not (@[name] is undefined)
-      return @[name]
-    else
-      return -> return @[privateName]
+  @createGetter: (privateName)->
+    return ()-> return @[privateName]
 
-  createSetter: (setterName, privateName)->
-    if not (@[setterName] is undefined)
-      return @[setterName]
-    else
-      return (value)-> @[privateName] = value
+  @createSetter: (privateName)->
+    return (value)-> @[privateName] = value
 
-  addSetter: (setterName, privateName)->
-    return if not (@[setterName] is undefined)
-    @[setterName] = (arg)->
-      @[privateName] = arg
-
-  addPrivateProperty: (name, intitialValue)->
+  @addPrivateProperty: (name, intitialValue)->
     intitialValue = null if intitialValue is undefined
-    @[name] = intitialValue
 
-  createSetterName: (name)->
+    @::[name] = intitialValue
+
+  @createSetterName: (name)->
     return 'set' + Jobject.capitalizeFirstLetter name
 
-  createPrivateName: (name)->
+  @createPrivateName: (name)->
     return '_' + name
 
-  validPropertyName: (name)->
+  @validPropertyName: (name)->
     validPropertyName = no
     if not name.match Jobject.regex.invalidPropertyName
       validPropertyName = yes

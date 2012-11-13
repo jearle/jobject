@@ -4,24 +4,24 @@ Jobject = require '../'
 describe 'Jobject', ->
   
   class TestClass extends Jobject
-    constructor: ->
-      @property 'age', '12'
+    @property 'age', '12'
 
   testClass = new TestClass()
+  testClass2 = new TestClass()
 
-  describe '#validPropertyName()', ->
+  describe 'Jobject.validPropertyName()', ->
     it 'should be a valid property name', ->
       for propName in ['a', '$', '_', 'a1']
-        testClass.validPropertyName(propName).should.be.true
+        Jobject.validPropertyName(propName).should.be.true
 
     it 'should be an invalid property name', ->
       for propName in ['1', '^', '%', '(', ')', 'a&f']
-        testClass.validPropertyName(propName).should.be.false
+        Jobject.validPropertyName(propName).should.be.false
 
-  describe '#property()', ->
+  describe 'Jobject.property()', ->
     it 'should throw error', ->
       (->
-        testClass.property '%').should.throw /^Invalid property+/
+        Jobject.property '%').should.throw /^Invalid property+/
 
     it 'should have private property', ->
       testClass.should.have.property '_age'
@@ -39,24 +39,18 @@ describe 'Jobject', ->
       testClass.age = '13'
       testClass.age.should.eql '13'
 
+    it 'should not equal each other', ->
+      testClass.age.should.not.be.eql testClass2.age
+
   class TestClassOverrides extends Jobject
-    constructor: ->
-      @property 'name'
-
-    name: ->
-      if @_name is null
-        @_name = ''
-      return @_name + '!'
-
-    setName: (name)->
-      @_name = name + '!'
+    @property 'name', '',
+      get: ()->
+        return @_name + '!'
+      set: (name)->
+        @_name = '!' + name
 
   testClassOverrides = new TestClassOverrides()
-  
-  describe '#property()', ->
-    it 'should override property', ->
-      testClassOverrides.name.should.eql '!'
 
-    it 'should override the setter and the getter', ->
-      testClassOverrides.name = 'Jesse'
-      testClassOverrides.name.should.eql 'Jesse!!'
+  it 'should override setter and getter', ()->
+    testClassOverrides.name = 'Jesse'
+    testClassOverrides.name.should.eql '!Jesse!'

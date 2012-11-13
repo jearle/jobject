@@ -1,11 +1,16 @@
 {
   "name": "jobject",
-  "description": "An class that adds properties to your class that are easily overriden and maintain direct accessors.  Similiar to objective-c @property and @synthesize",
-  "version": "0.0.1",
+  "description": "A class that adds properties to your class that are easily overriden and maintain direct accessors.  Similiar to objective-c @property and @synthesize.",
+  "version": "0.0.2",
   "author": {
     "name": "Jesse Earle",
     "email": "earle.jesse@gmail.com"
   },
+  "repository": { 
+    "type": "git", 
+    "url": "git://github.com/visionmedia/should.js.git" 
+  },
+  "homepage": "https://github.com/jearle/jobject",
   "keywords": [
     "properties",
     "objective-c",
