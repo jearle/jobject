@@ -1,20 +1,17 @@
 Jobject = require './'
 
 class MyClass extends Jobject
-  constructor: ()->
-    @property 'name'
-    @property 'title'
-    @property 'author'
+  @property 'name'
 
-  title: ()->
-    return 'TITLE: ' + @_title
-
-  setAuthor: (author)->
-    @_author = 'AUTHOR: ' + author
-
-  author: ()->
-    return @_author + '!!!!'
-
+  @property 'title', '', 
+    get: ()->
+      return 'TITLE: ' + @_title
+  
+  @property 'author', '', 
+    get: ()->
+      return @_author + '!!!!'
+    set: (author)->
+      @_author = 'AUTHOR: ' + author
 
 myClass = new MyClass()
 myClass.name = 'Jesse Earle'

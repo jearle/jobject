@@ -7,20 +7,17 @@ Jobject
 Jobject = require './'
 
 class MyClass extends Jobject
-  constructor: ()->
-    @property 'name'
-    @property 'title'
-    @property 'author'
+  @property 'name'
 
-  title: ()->
-    return 'TITLE: ' + @_title
-
-  setAuthor: (author)->
-    @_author = 'AUTHOR: ' + author
-
-  author: ()->
-    return @_author + '!!!!'
-
+  @property 'title', '', 
+    get: ()->
+      return 'TITLE: ' + @_title
+  
+  @property 'author', '', 
+    get: ()->
+      return @_author + '!!!!'
+    set: (author)->
+      @_author = 'AUTHOR: ' + author
 
 myClass = new MyClass()
 myClass.name = 'Jesse Earle'
@@ -45,8 +42,7 @@ Create a class that extends Jobject
 
 ```coffee
 class MyClass extends Jobject
-  constructor: ->
-    @property 'name'
+  @property 'name'
 ```
 
 This class now has the following properties:
@@ -67,8 +63,7 @@ You can also give a default value to the property:
 
 ```coffee
 class MyClass extends Jobject
-  constructor: ->
-    @property 'name', 'Default'
+  @property 'name', 'Default'
 
 myClass = new MyClass()
 console.log myClass.name # logs: Default
@@ -80,14 +75,12 @@ Overriding the getter and setter is simple:
 
 ```coffee
 class MyClass extends Jobject
-  constructor: ->
-    @property 'name', ''
 
-  setName: (name)->
-    @_name = '!' + name
-
-  name: ()->
-    return @_name + '!'
+  @property 'name', '',
+    get: ()->
+      return @_name + '!'
+    set: (name)->
+      @_name = '!' + name
 
 myClass = new MyClass()
 myClass.name = 'Jesse'
