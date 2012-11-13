@@ -45,7 +45,8 @@ Create a class that extends Jobject
 
 ```coffee
 class MyClass extends Jobject
-  @property 'name'
+  constructor: ->
+    @property 'name'
 ```
 
 This class now has the following properties:
@@ -62,3 +63,33 @@ myClass.name = 'Jesse'
 console.log myClass.name # logs: Jesse
 ```
 
+You can also give a default value to the property:
+
+```coffee
+class MyClass extends Jobject
+  constructor: ->
+    @property 'name', 'Default'
+
+myClass = new MyClass()
+console.log myClass.name # logs: Default
+```
+
+If you do not provide a default value it will point to null. Note that the property will exist on the instance.
+
+Overriding the getter and setter is simple:
+
+```coffee
+class MyClass extends Jobject
+  constructor: ->
+    @property 'name', ''
+
+  setName: (name)->
+    @_name = '!' + name
+
+  name: ()->
+    return @_name + '!'
+
+myClass = new MyClass()
+myClass.name = 'Jesse'
+console.log myClass.name # logs: !Jesse!
+```
